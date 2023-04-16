@@ -4,6 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,15 +15,16 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
-import com.example.clubolympus.data.ClubOlympusContract;
+import com.example.clubolympus.data.ClubOlympusContract.*;
 import java.util.ArrayList;
 
 public class AddMemberActivity extends AppCompatActivity {
 
     private EditText firstNameEditText;
     private EditText lastNameEditText;
-    private EditText groupEditText;
+    private EditText sportEditText;
     private Spinner genderSpinner;
     private int gender = 0;
     private ArrayAdapter spinnerAdapter;
@@ -33,7 +37,7 @@ public class AddMemberActivity extends AppCompatActivity {
 
         firstNameEditText = findViewById(R.id.firstNameEditText);
         lastNameEditText = findViewById(R.id.lastNameEditText);
-        groupEditText = findViewById(R.id.groupEditText);
+        sportEditText = findViewById(R.id.sportEditText);
         genderSpinner = findViewById(R.id.genderSpinner);
 
         spinnerArrayList = new ArrayList();
@@ -50,11 +54,11 @@ public class AddMemberActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedGender = (String) parent.getItemAtPosition(position);
                 if (selectedGender.equals("Male")) {
-                    gender = ClubOlympusContract.MemberEntry.GENDER_MALE;
+                    gender = MemberEntry.GENDER_MALE;
                 } else if (selectedGender.equals("Female")) {
-                    gender = ClubOlympusContract.MemberEntry.GENDER_FEMALE;
+                    gender = MemberEntry.GENDER_FEMALE;
                 } else {
-                    gender = ClubOlympusContract.MemberEntry.GENDER_UNKNOWN;
+                    gender = MemberEntry.GENDER_UNKNOWN;
                 }
             }
 
@@ -75,6 +79,7 @@ public class AddMemberActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.save_member:
+                insertMember();
                 return true;
             case R.id.delete_member:
                 return true;
@@ -82,5 +87,26 @@ public class AddMemberActivity extends AppCompatActivity {
                 NavUtils.navigateUpFromSameTask(this);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void insertMember() {
+        String firstName = firstNameEditText.getText().toString().trim();
+        String lastName = lastNameEditText.getText().toString().trim();
+        String sport = sportEditText.getText().toString().trim();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(MemberEntry.COLUMN_FIRST_NAME, firstName);
+        contentValues.put(MemberEntry.COLUMN_LAST_NAME, lastName);
+        contentValues.put(MemberEntry.COLUMN_SPORT, sport);
+        contentValues.put(MemberEntry.COLUMN_GENDER, gender);
+
+        ContentResolver contentResolver = getContentResolver();
+        Uri uri = contentResolver.insert(MemberEntry.CONTENT_URI, contentValues);
+
+        if (uri == null) {
+            Toast.makeText(this, "Insertion of date in the table failed for ", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "Data saved", Toast.LENGTH_SHORT).show();
+        }
     }
 }

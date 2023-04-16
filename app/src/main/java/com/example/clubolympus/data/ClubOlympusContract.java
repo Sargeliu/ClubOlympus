@@ -18,7 +18,7 @@ public final class ClubOlympusContract {
     public static final Uri BASE_CONTENT_URI = Uri.parse(SCHEME + AUTHORITY);
 
 
-    public class MemberEntry implements BaseColumns {
+    public static class MemberEntry implements BaseColumns {
 
         public static final String TABLE_NAME = "members";
 
@@ -32,6 +32,6 @@ public final class ClubOlympusContract {
         public static final int GENDER_MALE = 1;
         public static final int GENDER_FEMALE = 2;
 
-        public final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI,  PATH_MEMBERS);
+        public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI,  PATH_MEMBERS);
     }
 }
