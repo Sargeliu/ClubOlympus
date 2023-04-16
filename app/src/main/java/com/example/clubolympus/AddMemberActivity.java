@@ -13,6 +13,8 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.example.clubolympus.data.ClubOlympusContract;
+
 import java.util.ArrayList;
 
 public class AddMemberActivity extends AppCompatActivity {
@@ -49,11 +51,11 @@ public class AddMemberActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedGender = (String) parent.getItemAtPosition(position);
                 if (selectedGender.equals("Male")) {
-                    gender = 1;
+                    gender = ClubOlympusContract.MemberEntry.GENDER_MALE;
                 } else if (selectedGender.equals("Female")) {
-                    gender = 2;
+                    gender = ClubOlympusContract.MemberEntry.GENDER_FEMALE;
                 } else {
-                    gender = 0;
+                    gender = ClubOlympusContract.MemberEntry.GENDER_UNKNOWN;
                 }
             }
 
