@@ -1,5 +1,6 @@
 package com.example.clubolympus.data;
 
+import android.net.Uri;
 import android.provider.BaseColumns;
 
 public final class ClubOlympusContract {
@@ -9,6 +10,13 @@ public final class ClubOlympusContract {
 
     public static int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "olympusDB";
+
+    //Создание URI констант
+    public static final String SCHEME = "content://";
+    public static final String AUTHORITY = "com.example.clubolympus";
+    public static final String PATH_MEMBERS = "members";
+    public static final Uri BASE_CONTENT_URI = Uri.parse(SCHEME + AUTHORITY);
+
 
     public class MemberEntry implements BaseColumns {
 
@@ -24,5 +32,6 @@ public final class ClubOlympusContract {
         public static final int GENDER_MALE = 1;
         public static final int GENDER_FEMALE = 2;
 
+        public final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI,  PATH_MEMBERS);
     }
 }
