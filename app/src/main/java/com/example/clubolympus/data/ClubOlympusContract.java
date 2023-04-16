@@ -22,7 +22,7 @@ public final class ClubOlympusContract {
 
         public static final String TABLE_NAME = "members";
 
-        public static final String _ID = "id";
+        public static final String _ID = BaseColumns._ID;
         public static final String COLUMN_FIRST_NAME = "firstName";
         public static final String COLUMN_LAST_NAME = "lastName";
         public static final String COLUMN_GENDER = "gender";
