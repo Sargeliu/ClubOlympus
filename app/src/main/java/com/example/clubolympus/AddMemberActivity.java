@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.clubolympus.data.ClubOlympusContract;
-
 import java.util.ArrayList;
 
 public class AddMemberActivity extends AppCompatActivity {
