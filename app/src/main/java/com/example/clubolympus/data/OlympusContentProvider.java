@@ -4,6 +4,7 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
 import androidx.annotation.NonNull;
@@ -33,6 +34,21 @@ public class OlympusContentProvider extends ContentProvider {
 
     @Override
     public Cursor query(Uri uri,String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+        SQLiteDatabase db = olympusDbHelper.getReadableDatabase();
+        Cursor cursor;
+
+        int match = uriMatcher.match(uri);
+
+        switch (match) {
+            case MEMBERS:
+                cursor = db.query(ClubOlympusContract.MemberEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
+                break;
+            case  MEMBER_ID:
+
+                break;
+
+            default:
+        }
         return null;
     }
 
