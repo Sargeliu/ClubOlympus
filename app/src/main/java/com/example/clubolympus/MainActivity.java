@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         String[] projection = {
             MemberEntry._ID,
             MemberEntry.COLUMN_FIRST_NAME,
+            MemberEntry.COLUMN_LAST_NAME,
             MemberEntry.COLUMN_GENDER,
             MemberEntry.COLUMN_SPORT
         };
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         dataTextView.append(
                 MemberEntry._ID + " " +
                 MemberEntry.COLUMN_FIRST_NAME + " " +
+                MemberEntry.COLUMN_LAST_NAME + " " +
                 MemberEntry.COLUMN_GENDER + " " +
                 MemberEntry.COLUMN_SPORT
         );
