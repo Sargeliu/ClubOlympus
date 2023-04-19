@@ -10,22 +10,24 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.clubolympus.data.MemberCursorAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import com.example.clubolympus.data.ClubOlympusContract.*;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView dataTextView;
+    ListView dataListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        dataTextView = findViewById(R.id.dataTextView);
+        dataListView = findViewById(R.id.dataListView);
 
         FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -60,35 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 null
         );
 
-        dataTextView.setText("All members\n\n");
-        dataTextView.append(
-                MemberEntry._ID + " " +
-                MemberEntry.COLUMN_FIRST_NAME + " " +
-                MemberEntry.COLUMN_LAST_NAME + " " +
-                MemberEntry.COLUMN_GENDER + " " +
-                MemberEntry.COLUMN_SPORT
-        );
-
-        int idColumnIndex = cursor.getColumnIndex(MemberEntry._ID);
-        int FirstNameColumnIndex = cursor.getColumnIndex(MemberEntry.COLUMN_FIRST_NAME);
-        int LastNameColumnIndex = cursor.getColumnIndex(MemberEntry.COLUMN_LAST_NAME);
-        int GenderColumnIndex = cursor.getColumnIndex(MemberEntry.COLUMN_GENDER);
-        int SportColumnIndex = cursor.getColumnIndex(MemberEntry.COLUMN_SPORT);
-
-        while (cursor.moveToNext()) {
-            int currentId = cursor.getInt(idColumnIndex);
-            String currentFirstName = cursor.getString(FirstNameColumnIndex);
-            String currentLastName = cursor.getString(LastNameColumnIndex);
-            int currentGender = cursor.getInt(GenderColumnIndex);
-            String currentSport = cursor.getString(SportColumnIndex);
-
-            dataTextView.append("\n" +
-                    currentId + " " +
-                    currentFirstName + " " +
-                    currentLastName + " " +
-                    currentGender + " " +
-                    currentSport);
-        }
-        cursor.close();
+        MemberCursorAdapter cursorAdapter = new MemberCursorAdapter(this, cursor, false);
+        dataListView.setAdapter(cursorAdapter);
     }
 }
