@@ -1,8 +1,12 @@
 package com.example.clubolympus;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -18,8 +22,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import com.example.clubolympus.data.ClubOlympusContract.*;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    private static final int MEMBER_LOADER = 123;
+    MemberCursorAdapter memberCursorAdapter;
     ListView dataListView;
 
     @Override
@@ -37,32 +43,46 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        memberCursorAdapter = new MemberCursorAdapter(this, null, false);
+        dataListView.setAdapter(memberCursorAdapter);
+
+        getSupportLoaderManager().initLoader(MEMBER_LOADER, null, this);
     }
 
+
+    @NonNull
     @Override
-    protected void onStart() {
-        super.onStart();
-        displayData();
-    }
+    public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
 
-    private void displayData() {
         String[] projection = {
-            MemberEntry._ID,
-            MemberEntry.COLUMN_FIRST_NAME,
-            MemberEntry.COLUMN_LAST_NAME,
-            MemberEntry.COLUMN_GENDER,
-            MemberEntry.COLUMN_SPORT
+                MemberEntry._ID,
+                MemberEntry.COLUMN_FIRST_NAME,
+                MemberEntry.COLUMN_LAST_NAME,
+                MemberEntry.COLUMN_SPORT
         };
 
-        Cursor cursor = getContentResolver().query(
+        CursorLoader cursorLoader = new CursorLoader(this,
                 MemberEntry.CONTENT_URI,
                 projection,
                 null,
                 null,
                 null
         );
+        return cursorLoader;
+    }
 
-        MemberCursorAdapter cursorAdapter = new MemberCursorAdapter(this, cursor, false);
-        dataListView.setAdapter(cursorAdapter);
+    @Override
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+
+    memberCursorAdapter.swapCursor(data);
+
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+
+        memberCursorAdapter.swapCursor(null);
+
     }
 }
