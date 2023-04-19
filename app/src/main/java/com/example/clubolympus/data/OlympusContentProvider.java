@@ -62,6 +62,26 @@ public class OlympusContentProvider extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues values) {
 
+        String firstName = values.getAsString(MemberEntry.COLUMN_FIRST_NAME);
+        if (firstName == null) {
+            throw new IllegalArgumentException("You have to input first Name");
+        }
+
+        String lastName = values.getAsString(MemberEntry.COLUMN_LAST_NAME);
+        if (lastName == null) {
+            throw new IllegalArgumentException("You have to input last Name");
+        }
+
+        Integer gender = values.getAsInteger(MemberEntry.COLUMN_GENDER);
+        if (gender == null || !(gender == MemberEntry.GENDER_UNKNOWN || gender == MemberEntry.GENDER_MALE || gender == MemberEntry.GENDER_FEMALE)) {
+            throw new IllegalArgumentException("You have to input correct gender");
+        }
+
+        String sport = values.getAsString(MemberEntry.COLUMN_SPORT);
+        if (sport == null) {
+            throw new IllegalArgumentException("You have to input sport");
+        }
+
         SQLiteDatabase db = olympusDbHelper.getWritableDatabase();
 
         int match = uriMatcher.match(uri);
@@ -83,6 +103,35 @@ public class OlympusContentProvider extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+
+        if (values.containsKey(MemberEntry.COLUMN_FIRST_NAME)) {
+            String firstName = values.getAsString(MemberEntry.COLUMN_FIRST_NAME);
+            if (firstName == null) {
+                throw new IllegalArgumentException("You have to input first Name");
+            }
+        }
+
+        if (values.containsKey(MemberEntry.COLUMN_LAST_NAME)) {
+            String lastName = values.getAsString(MemberEntry.COLUMN_LAST_NAME);
+            if (lastName == null) {
+                throw new IllegalArgumentException("You have to input last Name");
+            }
+        }
+
+        if (values.containsKey(MemberEntry.COLUMN_GENDER)) {
+            Integer gender = values.getAsInteger(MemberEntry.COLUMN_GENDER);
+            if (gender == null || !(gender == MemberEntry.GENDER_UNKNOWN || gender == MemberEntry.GENDER_MALE || gender == MemberEntry.GENDER_FEMALE)) {
+                throw new IllegalArgumentException("You have to input correct gender");
+            }
+        }
+
+        if (values.containsKey(MemberEntry.COLUMN_SPORT)) {
+            String sport = values.getAsString(MemberEntry.COLUMN_SPORT);
+            if (sport == null) {
+                throw new IllegalArgumentException("You have to input sport");
+            }
+        }
+
 
         SQLiteDatabase db = olympusDbHelper.getWritableDatabase();
 
