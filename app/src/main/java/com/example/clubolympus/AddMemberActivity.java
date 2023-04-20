@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -112,6 +113,19 @@ public class AddMemberActivity extends AppCompatActivity implements LoaderManage
         String firstName = firstNameEditText.getText().toString().trim();
         String lastName = lastNameEditText.getText().toString().trim();
         String sport = sportEditText.getText().toString().trim();
+
+        if(TextUtils.isEmpty(firstName)) {
+            Toast.makeText(this, "Input the first name", Toast.LENGTH_SHORT).show();
+            return;
+        } else if(TextUtils.isEmpty(lastName)) {
+            Toast.makeText(this, "Input the last name", Toast.LENGTH_SHORT).show();
+            return;
+        } else if(TextUtils.isEmpty(sport)) {
+            Toast.makeText(this, "Input the sport", Toast.LENGTH_SHORT).show();
+        } else if(gender == MemberEntry.GENDER_UNKNOWN) {
+            Toast.makeText(this, "Choose the gender", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(MemberEntry.COLUMN_FIRST_NAME, firstName);
