@@ -99,7 +99,7 @@ public class AddMemberActivity extends AppCompatActivity implements LoaderManage
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.save_member:
-                insertMember();
+                saveMember();
                 return true;
             case R.id.delete_member:
                 return true;
@@ -109,7 +109,7 @@ public class AddMemberActivity extends AppCompatActivity implements LoaderManage
         return super.onOptionsItemSelected(item);
     }
 
-    private void insertMember() {
+    private void saveMember() {
         String firstName = firstNameEditText.getText().toString().trim();
         String lastName = lastNameEditText.getText().toString().trim();
         String sport = sportEditText.getText().toString().trim();
@@ -120,13 +120,22 @@ public class AddMemberActivity extends AppCompatActivity implements LoaderManage
         contentValues.put(MemberEntry.COLUMN_SPORT, sport);
         contentValues.put(MemberEntry.COLUMN_GENDER, gender);
 
-        ContentResolver contentResolver = getContentResolver();
-        Uri uri = contentResolver.insert(MemberEntry.CONTENT_URI, contentValues);
+        if (currentMemberUri == null) {
+            ContentResolver contentResolver = getContentResolver();
+            Uri uri = contentResolver.insert(MemberEntry.CONTENT_URI, contentValues);
 
-        if (uri == null) {
-            Toast.makeText(this, "Insertion of date in the table failed for ", Toast.LENGTH_LONG).show();
+            if (uri == null) {
+                Toast.makeText(this, "Insertion of date in the table failed", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Data saved", Toast.LENGTH_SHORT).show();
+            }
         } else {
-            Toast.makeText(this, "Data saved", Toast.LENGTH_SHORT).show();
+            int rowsChanged = getContentResolver().update(currentMemberUri, contentValues, null, null);
+            if (rowsChanged == 0) {
+                Toast.makeText(this, "Saving of date in the table failed", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Member updated", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
