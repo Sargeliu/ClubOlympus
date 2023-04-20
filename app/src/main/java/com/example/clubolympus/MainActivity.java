@@ -8,12 +8,15 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
+import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -46,6 +49,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         memberCursorAdapter = new MemberCursorAdapter(this, null, false);
         dataListView.setAdapter(memberCursorAdapter);
+
+        dataListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, AddMemberActivity.class);
+                Uri currentMemberUri = ContentUris.withAppendedId(MemberEntry.CONTENT_URI, id);
+                intent.setData(currentMemberUri);
+                startActivity(intent);
+            }
+        });
 
         getSupportLoaderManager().initLoader(MEMBER_LOADER, null, this);
     }

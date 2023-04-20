@@ -6,6 +6,7 @@ import androidx.core.app.NavUtils;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -34,6 +35,15 @@ public class AddMemberActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_member);
+
+        Intent intent = getIntent();
+        Uri currentMemberUri = intent.getData();
+
+        if (currentMemberUri == null) {
+            setTitle("Add a Member");
+        } else {
+            setTitle("Edit the Member");
+        }
 
         firstNameEditText = findViewById(R.id.firstNameEditText);
         lastNameEditText = findViewById(R.id.lastNameEditText);
