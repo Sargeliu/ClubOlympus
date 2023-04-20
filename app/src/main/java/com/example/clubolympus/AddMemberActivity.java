@@ -51,6 +51,7 @@ public class AddMemberActivity extends AppCompatActivity implements LoaderManage
             setTitle("Add a Member");
         } else {
             setTitle("Edit the Member");
+            getSupportLoaderManager().initLoader(EDIT_MEMBER_LOADER, null, this);
         }
 
         firstNameEditText = findViewById(R.id.firstNameEditText);
@@ -85,8 +86,6 @@ public class AddMemberActivity extends AppCompatActivity implements LoaderManage
                 gender = 0;
             }
         });
-
-        getSupportLoaderManager().initLoader(EDIT_MEMBER_LOADER, null, this);
     }
 
     @Override
